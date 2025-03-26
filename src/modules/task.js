@@ -55,7 +55,7 @@ class Task {
           
         if ((priority !== undefined) && (priority !== "")){
             this.priority = priority;
-            console.log("Priority successfully update!")
+            console.log("Priority successfully updated!")
         }
     }
 }

@@ -1,30 +1,22 @@
 import Task from "./modules/task.js";
+import Project from "./modules/project.js";
 
-
-//console test code
+//test code
 const task1 = new Task(
-    "Finish Odin Project",
-    "Complete the To Do List assignment",
+    "Buy groceries",
+    "Milk, Eggs, Bread",
     "2025-04-01",
-    "high"
-  );
+    "medium"
+);
+  
+const myProject = new Project("Daily Tasks");
+const result = myProject.addTask(task1);
+console.log(result); // Πρέπει να δεις "Task 'Buy groceries' added successfully!"
 
-console.log("Initial summary:", task1.getSummary());
-console.log("Initial completed status:", task1.completedStatus);
-console.log("Overdue check:", task1.isOverdue());
+console.log("All tasks in project:");
+console.table(myProject.tasksList);
 
-task1.toggleComplete();
-console.log("After toggle:", task1.completedStatus);
-console.log("Overdue check (should say completed):", task1.isOverdue());
+const result2 = myProject.addTask("go to gym"); // string, όχι Task object
+console.log(result2); // Πρέπει να δεις το warning + "Invalid Task, please try again"
 
-task1.update({
-    title: "Finish Final Odin Project",
-    priority: "medium",
-  });
 
-  console.log("After update:", task1.getSummary());
-  task1.update({ dueDate: "2025-05-10" }); // σωστή
-  console.log("After DATE update:", task1.getSummary());
-
-const pastTask = new Task("Old Task", "Expired", "2020-01-01", "low");
-console.log(pastTask.isOverdue()); // πρέπει να λέει ότι έχει λήξει
