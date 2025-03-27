@@ -9,10 +9,11 @@ class Project {
     addTask(task){
         if (task instanceof Task){
             this.tasks.push(task);
-            return `Task ${task.title} added successfully!`
+            console.log(`Task ${task.title} added successfully!`);
+            return true;
         }else {
             console.warn("Not a valid Task object");
-            return "Invalid Task, please try again";
+            return false;
         }
     }
 
@@ -23,10 +24,11 @@ class Project {
     removeTask(index){
         if ((index >= 0) && (index < this.tasks.length)){
             this.tasks.splice(index,1);
-            return "Task removed successfully!";
+            console.log("Task removed successfully!")
+            return true;
         }else {
             console.warn("Task not found on this index");
-            return "Invalid index, task not removed!";
+            return false;
         }
     }
 
@@ -39,9 +41,15 @@ class Project {
     }
 
     clearCompletedTasks() {
-        this.tasks = this.tasks.filter((task) => !task.completed);
-        return "Completed Tasks removed!"
-    }
+        const completedCount = this.tasks.filter(task => task.completed).length;
+      
+        if (completedCount > 0) {
+          this.tasks = this.tasks.filter(task => !task.completed);
+        }
+      
+        return completedCount;
+      }
+      
 }
 
 export default Project;

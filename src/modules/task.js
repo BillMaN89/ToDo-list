@@ -38,26 +38,36 @@ class Task {
     }
 
     update({ title, description, dueDate, priority }) {
-        const parsedDate = new Date(dueDate);
+    const changes = [];
+    const parsedDate = dueDate ? new Date(dueDate) : null;
 
-        if ((title !== undefined) && (title !== "")){
-            this.title = title;
-            console.log("Task title successfully updated!");
-        }
-        if ((description !== undefined) && (description !== "")){
-            this.description = description;
-            console.log("Task description successfully updated!");
-        }
-        if (!isNaN(parsedDate.getTime())) {
-            this.dueDate = parsedDate;
-            console.log("Due date successfully updated!");
-          }
-          
-        if ((priority !== undefined) && (priority !== "")){
-            this.priority = priority;
-            console.log("Priority successfully updated!")
-        }
+    if (title && title !== this.title) {
+        this.title = title;
+        changes.push("title");
     }
+
+    if (description && description !== this.description) {
+        this.description = description;
+        changes.push("description");
+    }
+
+    if (
+        parsedDate &&
+        !isNaN(parsedDate.getTime()) &&
+        parsedDate.getTime() !== this.dueDate.getTime()
+    ) {
+        this.dueDate = parsedDate;
+        changes.push("dueDate");
+    }
+
+    if (priority && priority !== this.priority) {
+        this.priority = priority;
+        changes.push("priority");
+    }
+
+    return changes.length > 0 ? changes : null;
+    }
+
 }
 
 export default Task;
