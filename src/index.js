@@ -1,28 +1,57 @@
 import Task from "./modules/task.js";
 import Project from "./modules/project.js";
 import ProjectManager from "./modules/projectManager.js";
+import Storage from "./modules/storage.js";
 
 //Project test code
 // 1. Δημιουργία ProjectManager
 const manager = new ProjectManager();
 
-// 2. Δημιουργία 2 projects
-const project1 = new Project("Work");
-const project2 = new Project("Fitness");
+const project1 = new Project("Personal");
+const task1 = new Task("Go shopping", "Buy groceries", "2025-04-01", "medium");
+const task2 = new Task("Call mom", "Quick check-in", "2025-04-02", "low");
 
-// 3. Προσθήκη valid projects
-console.log(manager.addProject(project1)); // ✅ Project "Work" added!
-console.log(manager.addProject(project2)); // ✅ Project "Fitness" added!
+project1.addTask(task1);
+project1.addTask(task2);
 
-// // 4. Προσθήκη invalid αντικειμένου
-// console.log(manager.addProject("Not a project")); // ❌ Invalid project.
+manager.addProject(project1);
 
-// 5. Έλεγχος projects και currentProject
-console.table(manager.projects);
-console.log("Current project index:", manager.currentProject);
+//localStorage test
+const saved = Storage.save(manager);
 
-manager.setCurrentProject(1);
-console.log(manager.getCurrentProject());
+if (saved) {
+  console.log("✅ Data saved successfully!");
+} else {
+  console.warn("❌ Saving failed.");
+}
+
+const restoredManager = Storage.load();
+
+if (restoredManager) {
+  console.log("✅ Data loaded successfully!");
+
+  // Δείξε τον αριθμό των projects
+  console.log("Number of projects:", restoredManager.projects.length);
+
+  // Δείξε το όνομα του current project
+  const current = restoredManager.getCurrentProject();
+  console.log("Current project name:", current ? current.name : "None");
+
+  // Δείξε τα tasks του πρώτου project
+  console.log("Tasks in first project:");
+  console.table(restoredManager.projects[0].tasksList);
+  
+} else {
+  console.warn("❌ No data found in localStorage.");
+}
+
+
+// // 5. Έλεγχος projects και currentProject
+// console.table(manager.projects);
+// console.log("Current project index:", manager.currentProject);
+
+// //manager.setCurrentProject(1);
+// console.log(manager.getCurrentProject());
 
 
 // // 6. Διαγραφή project με άκυρο index
