@@ -5,25 +5,25 @@ import Storage from "./modules/storage.js";
 
 //Project test code
 // 1. Δημιουργία ProjectManager
-const manager = new ProjectManager();
+// const manager = new ProjectManager();
 
-const project1 = new Project("Personal");
-const task1 = new Task("Go shopping", "Buy groceries", "2025-04-01", "medium");
-const task2 = new Task("Call mom", "Quick check-in", "2025-04-02", "low");
+// const project1 = new Project("Personal");
+// const task1 = new Task("Go shopping", "Buy groceries", "2025-04-01", "medium");
+// const task2 = new Task("Call mom", "Quick check-in", "2025-04-02", "low");
 
-project1.addTask(task1);
-project1.addTask(task2);
+// project1.addTask(task1);
+// project1.addTask(task2);
 
-manager.addProject(project1);
+// manager.addProject(project1);
 
-//localStorage test
-const saved = Storage.save(manager);
+// //localStorage test
+// const saved = Storage.save(manager);
 
-if (saved) {
-  console.log("✅ Data saved successfully!");
-} else {
-  console.warn("❌ Saving failed.");
-}
+// if (saved) {
+//   console.log("✅ Data saved successfully!");
+// } else {
+//   console.warn("❌ Saving failed.");
+// }
 
 const restoredManager = Storage.load();
 
