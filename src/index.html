@@ -4,8 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Do List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <div id="content"></div>
+    <div id="content">
+        <aside id="sidebar">
+            <h2>Projects</h2>
+            <ul id="project-list"></ul>
+            <button id="add-project-btn"> + New Project</button>
+        </aside>
+
+        <main id="main-panel">
+            <h2 id="project-title">Select a Project</h2>
+            <ul id="task-list"></ul>
+            <button id="add-task-btn">+ New Task</button>
+        </main>
+    </div>
 </body>
+<footer>
+    <p>Created by <a href="https://github.com/BillMaN89" target="_blank"><i class="fab fa-github"></i>BillMaN89</a></p>
+</footer>
 </html>
