@@ -8,20 +8,61 @@
 </head>
 <body>
     <div id="content">
-        <aside id="sidebar">
-            <h2>Projects</h2>
-            <ul id="project-list"></ul>
-            <button id="add-project-btn"> + New Project</button>
-        </aside>
-
-        <main id="main-panel">
-            <h2 id="project-title">Select a Project</h2>
-            <ul id="task-list"></ul>
-            <button id="add-task-btn">+ New Task</button>
-        </main>
+      <aside id="sidebar">
+        <h2>Projects</h2>
+        <ul id="project-list"></ul>
+        <button id="add-project-btn">
+            <i class="fa-solid fa-folder-plus"></i> New Project
+          </button>
+      </aside>
+  
+      <main id="main-panel">
+        <h2 id="project-title">Select a Project</h2>
+        <ul id="task-list"></ul>
+        <button id="add-task-btn">
+            <i class="fa-solid fa-file-circle-plus"></i> New Task
+        </button>
+      </main>
     </div>
-</body>
-<footer>
-    <p>Created by <a href="https://github.com/BillMaN89" target="_blank"><i class="fab fa-github"></i>BillMaN89</a></p>
-</footer>
+  
+    <!-- Project Modal -->
+    <div id="project-modal" class="modal hidden">
+      <form id="project-form">
+        <h3>New Project</h3>
+        <input type="text" id="project-title" placeholder="Project Title" required />
+        <label>
+          <input type="checkbox" id="make-current" />
+          Set as current project
+        </label>
+        <div class="form-buttons">
+          <button type="submit">Add</button>
+          <button type="button" id="cancel-project">Cancel</button>
+        </div>
+      </form>
+    </div>
+  
+    <!-- Task Modal -->
+    <div id="task-modal" class="modal hidden">
+      <form id="task-form">
+        <h3>New Task</h3>
+        <input type="text" id="task-title" placeholder="Title" required />
+        <input type="text" id="task-desc" placeholder="Description" />
+        <input type="date" id="task-date" required />
+        <select id="task-priority">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
+        <div class="form-buttons">
+          <button type="submit">Add Task</button>
+          <button type="button" id="cancel-task">Cancel</button>
+        </div>
+      </form>
+    </div>
+  
+    <footer>
+      <p>Created by <a href="https://github.com/BillMaN89" target="_blank"><i class="fab fa-github"></i>BillMaN89</a></p>
+    </footer>
+  </body>
+  
 </html>
