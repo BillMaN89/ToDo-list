@@ -69,12 +69,14 @@ class UI{
         current.tasks.forEach((task, index) => {
             const listItem = document.createElement("li");
             const title = document.createElement("span");
-            title.textContent = `📝 ${task.title}`;
+            title.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> ${task.title}`;
+            const description = document.createElement("span");
+            description.innerHTML = ` | <i class="fa-solid fa-clipboard"></i> ${task.description}`
             const dueDate = document.createElement("span");
             const formattedDate = format(new Date(task.dueDate), "dd/MM/yyyy");
-            dueDate.textContent = ` | 📅 ${formattedDate}`;
+            dueDate.innerHTML = ` | <i class="fa-solid fa-calendar-days"></i>  ${formattedDate}`;
             const priority = document.createElement("span");
-            priority.textContent = ` | 🚦 ${task.priority} `;
+            priority.innerHTML = ` | <i class="fa-solid fa-traffic-light"></i>  ${task.priority} `;
             const completed = document.createElement("span");
             completed.textContent = task.completed;
 
@@ -93,7 +95,7 @@ class UI{
             completeBtn.innerHTML = task.completed ? "✅ Completed" : "Mark ✅";
             completeBtn.title = "Mark as Complete";
             const dltBtn = document.createElement("button");
-            dltBtn.innerHTML = '<i class="fa-solid fa-xmark" title="Delete Project"></i>';
+            dltBtn.innerHTML = '<i class="fa-solid fa-xmark" title="Delete Task"></i>';
 
             completeBtn.addEventListener("click", () => {
                 task.toggleComplete();
@@ -106,6 +108,7 @@ class UI{
             })
            
             listItem.appendChild(title);
+            listItem.appendChild(description);
             listItem.appendChild(dueDate);
             listItem.appendChild(priority);
             listItem.appendChild(completeBtn);
@@ -160,7 +163,7 @@ class UI{
         //Add Task
         this.taskAddBtn.addEventListener("click", () => {
             const current = this.manager.getCurrentProject();
-            
+
             if (!current) {
                 alert("There is no active project!");
                 return;
