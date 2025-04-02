@@ -6,7 +6,7 @@ It is created with Webpack, making use of the following libraries:
     1. date-fns
     2. localStorage
 
-You can check it out through this Live [Demo]().
+You can check it out through this Live [Demo](https://billman89.github.io/ToDo-list/).
 
 Functionality
 
