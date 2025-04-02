@@ -10,6 +10,25 @@ class UI{
         this.projectListElement = document.querySelector("#project-list");
         this.taskListElement = document.querySelector("#task-list");
         this.projectTitleElement = document.querySelector("#project-title");
+
+        //project modal
+        this.projectModal = document.querySelector("#project-modal");
+        this.projectForm = document.querySelector("#project-form");
+        this.projectTitleInput = document.querySelector("#project-name-input");
+        this.projectCurrentCheckbox = document.querySelector("#make-current");
+        this.projectCancelBtn = document.querySelector("#cancel-project");
+        this.projectAddBtn = document.querySelector("#add-project-btn");
+
+        // task modal
+        this.taskModal = document.querySelector("#task-modal");
+        this.taskForm = document.querySelector("#task-form");
+        this.taskTitleInput = document.querySelector("#task-title");
+        this.taskDescInput = document.querySelector("#task-desc");
+        this.taskDateInput = document.querySelector("#task-date");
+        this.taskPrioritySelect = document.querySelector("#task-priority");
+        this.taskCancelBtn = document.querySelector("#cancel-task");
+        this.taskAddBtn = document.querySelector("#add-task-btn");
+
     }
 
     renderProjectList(projectManager) {
@@ -105,7 +124,76 @@ class UI{
     }
 
     setupEventListeners() {
+        //Add Project
+        this.projectAddBtn.addEventListener("click", () => {
+            this.projectModal.classList.remove("hidden");
+        });
 
+        this.projectForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const title = this.projectTitleInput.value.trim();
+            const setCurrent = this.projectCurrentCheckbox.checked;
+    
+            const newProject = new Project(title);
+            this.manager.addProject(newProject);
+    
+            if (setCurrent){
+                const index = this.manager.projects.length - 1;
+                this.manager.setCurrentProject(index);
+            };
+    
+            this.renderProjectList();
+            this.updateProjectTitle();
+            this.renderTaskList();
+            Storage.save(this.manager);
+    
+            this.projectForm.reset();
+            this.projectModal.classList.add("hidden");
+        });
+
+        this.projectCancelBtn.addEventListener("click", () => {
+            this.projectForm.reset();
+            this.projectModal.classList.add("hidden");
+        });
+
+        //Add Task
+        this.taskAddBtn.addEventListener("click", () => {
+            const current = this.manager.getCurrentProject();
+            
+            if (!current) {
+                alert("There is no active project!");
+                return;
+            }
+
+            this.taskModal.classList.remove("hidden");
+        });
+
+        this.taskForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const current = this.manager.getCurrentProject();
+            if (!current) return; //safety check
+
+            const title = this.taskTitleInput.value.trim();
+            const description = this.taskDescInput.value;
+            const dueDate = this.taskDateInput.value;
+            const priority = this.taskPrioritySelect.value;
+
+            const newTask = new Task(title, description, dueDate, priority);
+            current.addTask(newTask);
+
+            this.renderTaskList();
+            Storage.save(this.manager);
+
+            this.taskForm.reset();
+            this.taskModal.classList.add("hidden");
+        });
+
+        this.taskCancelBtn.addEventListener("click", () =>{
+            this.taskForm.reset();
+            this.taskModal.classList.add("hidden");
+        });
     }
 }
 
