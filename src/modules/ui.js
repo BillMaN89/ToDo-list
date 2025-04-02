@@ -2,7 +2,7 @@ import Task from "./task.js";
 import Project from "./project.js";
 import ProjectManager from "./projectManager.js";
 import Storage from "./storage.js";
-import { format } from "date-fns";
+import { format, isBefore, startOfToday } from "date-fns";
 
 class UI{
     constructor(manager) {
@@ -68,6 +68,7 @@ class UI{
 
         current.tasks.forEach((task, index) => {
             const listItem = document.createElement("li");
+            listItem.classList.add("task-item");
             const title = document.createElement("span");
             title.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> ${task.title}`;
             const description = document.createElement("span");
@@ -79,7 +80,11 @@ class UI{
             priority.innerHTML = ` | <i class="fa-solid fa-traffic-light"></i>  ${task.priority} `;
             const completed = document.createElement("span");
             completed.textContent = task.completed;
-
+            
+            if (!task.completed && isBefore(new Date(task.dueDate), startOfToday())) {
+                listItem.classList.add("overdue");
+            }
+              
             if (task.completed) listItem.classList.add("completed");
 
             if (task.priority === "high"){
@@ -92,10 +97,15 @@ class UI{
             };
 
             const completeBtn = document.createElement("button");
-            completeBtn.innerHTML = task.completed ? "✅ Completed" : "Mark ✅";
+            completeBtn.innerHTML = task.completed ? "✅ Done" : "Mark ✅";
             completeBtn.title = "Mark as Complete";
             const dltBtn = document.createElement("button");
             dltBtn.innerHTML = '<i class="fa-solid fa-xmark" title="Delete Task"></i>';
+
+            const btnContainer = document.createElement("div");
+            btnContainer.classList.add("task-buttons");
+            btnContainer.appendChild(completeBtn);
+            btnContainer.appendChild(dltBtn);
 
             completeBtn.addEventListener("click", () => {
                 task.toggleComplete();
@@ -111,8 +121,7 @@ class UI{
             listItem.appendChild(description);
             listItem.appendChild(dueDate);
             listItem.appendChild(priority);
-            listItem.appendChild(completeBtn);
-            listItem.appendChild(dltBtn);
+            listItem.appendChild(btnContainer);
             this.taskListElement.appendChild(listItem);
         })
     }

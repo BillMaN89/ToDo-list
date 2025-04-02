@@ -1,5 +1,7 @@
 html {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: #f9f9fc;
+  margin: 0;
 }
 
 #content {
@@ -26,6 +28,36 @@ padding: 0;
 margin-top: 1rem;
 }
 
+#project-list li {
+  cursor: pointer;
+}
+
+#project-list li:hover{
+  background-color: #d6e6f2;
+  border-radius: 4px;
+}
+
+.high {
+  background-color: #fdecea;
+  border-left: 5px solid #e74c3c;
+}
+
+.medium {
+  background-color: #fff8e6;
+  border-left: 5px solid #f39c12;
+}
+
+.low {
+  background-color: #e8f5e9;
+  border-left: 5px solid #27ae60;
+}
+
+.overdue {
+  background-color: #f8d7da;
+  border-left: 5px solid #dc3545;
+  color: #721c24;
+}
+
 
 button {
   padding: 0.4rem 0.8rem;
@@ -41,34 +73,71 @@ button:hover {
   background-color: #0056b3;
 }
 
+.task-item {
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 1rem;
+  border-radius: 6px;
+  border-left: 5px solid transparent;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease;
+}
+
+.task-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  justify-content: flex-start;
+}
+
+#project-title {
+  text-align: center;
+}
+
+.task-item:hover {
+  background-color: #f9f9f9;
+}
+
 .completed {
-    text-decoration: line-through;
-    opacity: 0.6;
-  }  
+  text-decoration: line-through;
+  background-color: #d4edda; 
+  border-left: 5px solid #28a745; 
+  color: #155724; 
+  font-style: italic;
+  opacity: 1;
+}
 
-  .modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 1.5rem;
-    border: 2px solid #333;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.25);
-    z-index: 1000;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
-  .form-buttons {
-    margin-top: 1rem;
-    display: flex;
-    gap: 1rem;
-  }
-  
 
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 1.5rem;
+  border: 2px solid #333;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+  z-index: 1000;
+}
+  
+.hidden {
+  display: none;
+}
+
+.form-buttons {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: #f1f1f1;
+  font-size: 0.9rem;
+  color: #444;
+  border-top: 1px solid #ccc;
+}
   
   

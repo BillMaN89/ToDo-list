@@ -5,6 +5,7 @@ import Task from "./modules/task.js";
 import Storage from "./modules/storage.js";
 import UI from "./modules/ui.js";
 
+//localStorage.removeItem("todo-list-data");
 document.addEventListener("DOMContentLoaded", () => {
   let manager = Storage.load();
 
