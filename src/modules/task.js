@@ -66,7 +66,7 @@ class Task {
         }
     
         return changes.length > 0 ? changes : null;
-        }
+    }
 
 }
 
