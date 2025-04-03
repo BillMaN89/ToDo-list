@@ -38,35 +38,35 @@ class Task {
     }
 
     update({ title, description, dueDate, priority }) {
-    const changes = [];
-    const parsedDate = dueDate ? new Date(dueDate) : null;
-
-    if (title && title !== this.title) {
-        this.title = title;
-        changes.push("title");
-    }
-
-    if (description && description !== this.description) {
-        this.description = description;
-        changes.push("description");
-    }
-
-    if (
-        parsedDate &&
-        !isNaN(parsedDate.getTime()) &&
-        parsedDate.getTime() !== this.dueDate.getTime()
-    ) {
-        this.dueDate = parsedDate;
-        changes.push("dueDate");
-    }
-
-    if (priority && priority !== this.priority) {
-        this.priority = priority;
-        changes.push("priority");
-    }
-
-    return changes.length > 0 ? changes : null;
-    }
+        const changes = [];
+        const parsedDate = dueDate ? new Date(dueDate) : null;
+    
+        if (title && title !== this.title) {
+            this.title = title;
+            changes.push("title");
+        }
+    
+        if (description && description !== this.description) {
+            this.description = description;
+            changes.push("description");
+        }
+    
+        if (
+            parsedDate &&
+            !isNaN(parsedDate.getTime()) &&
+            parsedDate.getTime() !== this.dueDate.getTime()
+        ) {
+            this.dueDate = parsedDate;
+            changes.push("dueDate");
+        }
+    
+        if (priority && priority !== this.priority) {
+            this.priority = priority;
+            changes.push("priority");
+        }
+    
+        return changes.length > 0 ? changes : null;
+        }
 
 }
 
