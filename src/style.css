@@ -1,3 +1,4 @@
+/* === Base Styles === */
 html {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   background-color: #f9f9fc;
@@ -9,6 +10,7 @@ html {
   min-height: 65vh;
 }
 
+/* === Sidebar === */
 #sidebar {
   flex: 0 0 250px;
   background-color: #f5f5f5;
@@ -16,71 +18,68 @@ html {
   border-right: 1px solid #ccc;
 }
 
+#project-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+#project-list li {
+  cursor: pointer;
+  margin-bottom: 0.6rem;
+}
+
+#project-list li:hover {
+  background-color: #d6e6f2;
+  border-radius: 4px;
+}
+
+.project-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+}
+
+.project-entry span {
+  flex-grow: 1;
+}
+
+
+/* === Main Panel === */
 #main-panel {
   flex: 1;
   padding: 1rem;
 }
 
-#project-list,
 #task-list {
-list-style: none;
-padding: 0;
-margin-top: 1rem;
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
 }
 
-#project-list li {
-  cursor: pointer;
+#project-header {
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
-#project-list li:hover{
-  background-color: #d6e6f2;
-  border-radius: 4px;
+#project-header h2 {
+  margin-bottom: 0.5rem;
 }
 
-.high {
-  background-color: #fdecea;
-  border-left: 5px solid #e74c3c;
-}
-
-.medium {
-  background-color: #fff8e6;
-  border-left: 5px solid #f39c12;
-}
-
-.low {
-  background-color: #e8f5e9;
-  border-left: 5px solid #27ae60;
-}
-
-.overdue {
-  background-color: #f8d7da;
-  border-left: 5px solid #dc3545;
-  color: #721c24;
-}
-
-
-button {
-  padding: 0.4rem 0.8rem;
-  margin-top: 0.5rem;
-  background-color: #8dbbec;
-  color: white;
-  border: none;
-  border-radius: 2px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
+/* === Task Cards === */
 .task-item {
   max-width: 750px;
   margin: 0 auto;
   padding: 1rem;
   border-radius: 6px;
   border-left: 5px solid transparent;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease;
+}
+
+.task-item:hover {
+  background-color: #f9f9f9;
 }
 
 .task-buttons {
@@ -90,24 +89,68 @@ button:hover {
   justify-content: flex-start;
 }
 
-#project-title {
-  text-align: center;
+/* === Priorities === */
+.high {
+  background-color: #fdecea;
+  border-left-color: #e74c3c;
 }
 
-.task-item:hover {
-  background-color: #f9f9f9;
+.medium {
+  background-color: #fff8e6;
+  border-left-color: #f39c12;
 }
 
+.low {
+  background-color: #e8f5e9;
+  border-left-color: #27ae60;
+}
+
+/* === Completed Tasks === */
 .completed {
   text-decoration: line-through;
-  background-color: #d4edda; 
-  border-left: 5px solid #28a745; 
-  color: #155724; 
+  border-left-color: #28a745;
+  color: #155724;
   font-style: italic;
-  opacity: 1;
 }
 
+/* === Overdue Message === */
+.overdue-msg {
+  color: #e74c3c;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
 
+/* === Buttons === */
+button {
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  background-color: #8dbbec;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+  background-color: #5a9bdc;
+}
+
+/* Delete Icon Buttons */
+button.icon-btn {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.9rem;
+  background-color: #8dbbec;
+  border-radius: 3px;
+}
+
+button.icon-btn:hover {
+  transform: none;
+  background-color: #5a9bdc;
+}
+
+/* === Modals === */
 .modal {
   position: fixed;
   top: 50%;
@@ -117,10 +160,10 @@ button:hover {
   padding: 1.5rem;
   border: 2px solid #333;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   z-index: 1000;
 }
-  
+
 .hidden {
   display: none;
 }
@@ -131,6 +174,7 @@ button:hover {
   gap: 1rem;
 }
 
+/* === Footer === */
 footer {
   text-align: center;
   padding: 1rem;
@@ -139,5 +183,5 @@ footer {
   color: #444;
   border-top: 1px solid #ccc;
 }
-  
+
   

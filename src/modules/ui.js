@@ -36,7 +36,11 @@ class UI{
 
         this.manager.projects.forEach((project, index) => {
             const listItem = document.createElement("li");
-            listItem.textContent = project.name;
+            const wrapper = document.createElement("div");
+            wrapper.classList.add("project-entry");
+
+            const titleSpan = document.createElement("span");
+            titleSpan.textContent = project.name;
 
             listItem.addEventListener("click", () => {
                 this.manager.setCurrentProject(index);
@@ -45,6 +49,7 @@ class UI{
             })
 
             const dltBtn = document.createElement("button");
+            dltBtn.classList.add("icon-btn");
             dltBtn.innerHTML = '<i class="fas fa-trash" title="Delete Project"></i>';
             dltBtn.addEventListener("click", () => {
                 this.manager.removeProject(index);
@@ -53,7 +58,9 @@ class UI{
                 this.updateProjectTitle();
             });
 
-            listItem.appendChild(dltBtn);
+            wrapper.appendChild(titleSpan);
+            wrapper.appendChild(dltBtn);
+            listItem.appendChild(wrapper);
             this.projectListElement.appendChild(listItem);
         });
     }
@@ -78,11 +85,14 @@ class UI{
             dueDate.innerHTML = ` | <i class="fa-solid fa-calendar-days"></i>  ${formattedDate}`;
             const priority = document.createElement("span");
             priority.innerHTML = ` | <i class="fa-solid fa-traffic-light"></i>  ${task.priority} `;
+            const overdue = document.createElement("span");
+            overdue.classList.add("overdue-msg");
             const completed = document.createElement("span");
             completed.textContent = task.completed;
             
             if (!task.completed && isBefore(new Date(task.dueDate), startOfToday())) {
                 listItem.classList.add("overdue");
+                overdue.innerHTML = `  <i class="fas fa-exclamation-triangle"></i> Task Overdue <i class="fas fa-exclamation-triangle"></i>`;
             }
               
             if (task.completed) listItem.classList.add("completed");
@@ -100,12 +110,14 @@ class UI{
             completeBtn.innerHTML = task.completed ? "✅ Done" : "Mark ✅";
             completeBtn.title = "Mark as Complete";
             const dltBtn = document.createElement("button");
-            dltBtn.innerHTML = '<i class="fa-solid fa-xmark" title="Delete Task"></i>';
+            dltBtn.classList.add("icon-btn");
+            dltBtn.innerHTML = '<i class="fas fa-trash" title="Delete Task"></i>';
 
             const btnContainer = document.createElement("div");
             btnContainer.classList.add("task-buttons");
             btnContainer.appendChild(completeBtn);
             btnContainer.appendChild(dltBtn);
+            btnContainer.appendChild(overdue);
 
             completeBtn.addEventListener("click", () => {
                 task.toggleComplete();
@@ -121,6 +133,7 @@ class UI{
             listItem.appendChild(description);
             listItem.appendChild(dueDate);
             listItem.appendChild(priority);
+            // listItem.appendChild(overdue);
             listItem.appendChild(btnContainer);
             this.taskListElement.appendChild(listItem);
         })
