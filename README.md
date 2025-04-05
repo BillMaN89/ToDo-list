@@ -1,6 +1,6 @@
 # ToDo-list
 
-ToDo list is a practiced project, derived from "The Odin Project" JavaScript Course.
+ToDo list is a practice project, derived from "The Odin Project" JavaScript Course.
 It is created with Webpack, making use of the following libraries:
 
     1. date-fns
@@ -22,6 +22,6 @@ Every task has 4 properties:
         b. Yellow for medium priorty.
         c. Light Red for high priority.
         
-If a Task is past it's due date, then the background changes to Dark Red.
+If a Task is overdue, then a warning sign appears on the bottom of the task.
 
 You can also mark Tasks as complete, delete them, as well as you can delete Projects.
