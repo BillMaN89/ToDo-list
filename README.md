@@ -24,4 +24,6 @@ Every task has 4 properties:
         
 If a Task is overdue, then a warning sign appears on the bottom of the task.
 
-You can also mark Tasks as complete, delete them, as well as you can delete Projects.
+Tasks: You can edit, mark as complete and delete them. The options are accessible via the dropdown menu.
+        (right side of task card)
+

@@ -18,6 +18,7 @@ class UI{
         this.projectCurrentCheckbox = document.querySelector("#make-current");
         this.projectCancelBtn = document.querySelector("#cancel-project");
         this.projectAddBtn = document.querySelector("#add-project-btn");
+        this.projectSubmit = document.querySelector("#submit-project");
 
         // task modal
         this.taskModal = document.querySelector("#task-modal");
@@ -28,6 +29,7 @@ class UI{
         this.taskPrioritySelect = document.querySelector("#task-priority");
         this.taskCancelBtn = document.querySelector("#cancel-task");
         this.taskAddBtn = document.querySelector("#add-task-btn");
+        this.taskSubmitBtn = document.querySelector("#submit-task");
 
     }
 
@@ -106,37 +108,86 @@ class UI{
                 listItem.classList.add("low");
             };
 
-            const completeBtn = document.createElement("button");
-            completeBtn.innerHTML = task.completed ? "✅ Done" : "Mark ✅";
-            completeBtn.title = "Mark as Complete";
-            const dltBtn = document.createElement("button");
-            dltBtn.classList.add("icon-btn");
-            dltBtn.innerHTML = '<i class="fas fa-trash" title="Delete Task"></i>';
+            //menu button
+            const menuBtn = document.createElement("button");
+            menuBtn.classList.add("menu-btn");
+            menuBtn.innerHTML = '<i class="fas fa-ellipsis-v"></i>';
+
+            menuBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+
+                document.querySelectorAll(".dropdown-menu.show").forEach(menu => {
+                    if (menu !==dropdown) {
+                        menu.classList.remove("show");
+                    }
+                });
+
+                dropdown.classList.toggle("show");
+            });
+
+            //drop-down list
+            const dropdown = this.createTaskDropdown(index, task);
 
             const btnContainer = document.createElement("div");
             btnContainer.classList.add("task-buttons");
-            btnContainer.appendChild(completeBtn);
-            btnContainer.appendChild(dltBtn);
             btnContainer.appendChild(overdue);
-
-            completeBtn.addEventListener("click", () => {
-                task.toggleComplete();
-                this.renderTaskList();
-            });
-
-            dltBtn.addEventListener("click", () => {
-                current.removeTask(index);
-                this.renderTaskList();
-            })
-           
+            btnContainer.appendChild(menuBtn);
+            btnContainer.appendChild(dropdown);
+            
             listItem.appendChild(title);
             listItem.appendChild(description);
             listItem.appendChild(dueDate);
             listItem.appendChild(priority);
-            // listItem.appendChild(overdue);
             listItem.appendChild(btnContainer);
             this.taskListElement.appendChild(listItem);
-        })
+        });
+    }
+
+    createTaskDropdown(index, task) {
+        const dropdown = document.createElement("ul");
+        dropdown.classList.add("dropdown-menu");
+
+        //Edit
+        const editOption = document.createElement("li");
+        editOption.innerHTML = `<i class="fas fa-edit"></i> Edit`;
+        editOption.addEventListener("click", () => {
+            this.editingTaskIndex = index;
+
+            this.taskTitleInput.value = task.title;
+            this.taskDescInput.value = task.description;
+            this.taskDateInput.value = format(task.dueDate, "yyyy-MM-dd");
+            this.taskPrioritySelect.value = task.priority;
+
+            this.taskSubmitBtn.textContent = "Update Task";
+            this.taskModal.classList.remove("hidden");
+        });
+
+        //Complete toggle
+        const completeOption = document.createElement("li");
+        completeOption.innerHTML = task.completed
+            ? '<i class="fas fa-undo"></i> Undo Complete'
+            : '<i class="fas fa-check"></i> Mark Complete';
+        completeOption.addEventListener("click", () => {
+            task.toggleComplete();
+            this.renderTaskList();
+            Storage.save(this.manager);
+        });
+
+        //Delete
+        const dltOption = document.createElement("li");
+        dltOption.innerHTML = '<i class="fas fa-trash" title="Delete Task"></i> Delete';
+        dltOption.addEventListener("click", () => {
+            const current = this.manager.getCurrentProject();
+            current.removeTask(index);
+            this.renderTaskList();
+            Storage.save(this.manager);
+        });
+
+        dropdown.appendChild(editOption);
+        dropdown.appendChild(completeOption);
+        dropdown.appendChild(dltOption);
+
+        return dropdown;
     }
 
     updateProjectTitle() {
@@ -149,6 +200,13 @@ class UI{
     }
 
     setupEventListeners() {
+        //global click listener
+        document.addEventListener("click", () => {
+            document.querySelectorAll(".dropdown-menu.show").forEach(menu => {
+                menu.classList.remove("show");
+            });
+        });
+        
         //Add Project
         this.projectAddBtn.addEventListener("click", () => {
             this.projectModal.classList.remove("hidden");
@@ -205,19 +263,31 @@ class UI{
             const dueDate = this.taskDateInput.value;
             const priority = this.taskPrioritySelect.value;
 
-            const newTask = new Task(title, description, dueDate, priority);
-            current.addTask(newTask);
+            if(this.editingTaskIndex !== null) {
+                const task = current.tasks[this.editingTaskIndex];
+                task.update({ title, description, dueDate, priority });
+
+                this.editingTaskIndex = null;
+            } else {
+                const newTask = new Task(title, description, dueDate, priority);
+                current.addTask(newTask);
+            };
 
             this.renderTaskList();
             Storage.save(this.manager);
 
             this.taskForm.reset();
             this.taskModal.classList.add("hidden");
+            this.taskSubmitBtn.textContent = "Add Task";
+
         });
 
         this.taskCancelBtn.addEventListener("click", () =>{
             this.taskForm.reset();
             this.taskModal.classList.add("hidden");
+            this.editingTaskIndex = null;
+            this.taskSubmitBtn.textContent = "Add Task";
+
         });
     }
 }
