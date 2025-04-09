@@ -146,6 +146,9 @@ class UI{
                 listItem.classList.add("low");
             };
 
+            //drop-down list
+            const dropdown = this.createTaskDropdown(index, task);
+
             //menu button
             const menuBtn = document.createElement("button");
             menuBtn.classList.add("menu-btn");
@@ -162,9 +165,6 @@ class UI{
 
                 dropdown.classList.toggle("show");
             });
-
-            //drop-down list
-            const dropdown = this.createTaskDropdown(index, task);
 
             const btnContainer = document.createElement("div");
             btnContainer.classList.add("task-buttons");
@@ -252,33 +252,55 @@ class UI{
 
         this.projectForm.addEventListener("submit", (e) => {
             e.preventDefault();
-
+        
             const title = this.projectTitleInput.value.trim();
             const setCurrent = this.projectCurrentCheckbox.checked;
-
+        
+            let project;
+        
             if (this.editingProjectIndex !== null) {
-                const project = this.manager.projects[this.editingProjectIndex];
-                project.updateProjectTitle({ name: title });
+                const existingProject = this.manager.projects[this.editingProjectIndex];
+            
+                if (existingProject) {
+                    existingProject.updateProjectTitle({ name: title });
+                    project = existingProject;
+                } else {
+                    console.warn("Editing project does not exist anymore.");
+                    project = new Project(title);
+                    this.manager.addProject(project);
+                }
+            
                 this.editingProjectIndex = null;
             } else {
-                const newProject = new Project(title);
-                this.manager.addProject(newProject);
-            };
-                
-            if (setCurrent){
-                const index = this.manager.projects.length - 1;
-                this.manager.setCurrentProject(index);
-            };
-    
+                project = new Project(title);
+                this.manager.addProject(project);
+            }
+            
+        
+            let index = null;
+
+            if (setCurrent) {
+                index = this.editingProjectIndex !== null
+                    ? this.editingProjectIndex
+                    : this.manager.projects.length - 1;
+
+                if (index !== -1) {
+                    this.manager.setCurrentProject(index);
+                }
+            }
+
+            this.editingProjectIndex = null; // Bonus cleanup
+
             this.renderProjectList();
             this.updateProjectTitle();
             this.renderTaskList();
             Storage.save(this.manager);
-    
+        
             this.projectForm.reset();
             this.projectModal.classList.add("hidden");
             this.projectSubmit.textContent = "Add Project";
         });
+        
 
         this.projectCancelBtn.addEventListener("click", () => {
             this.projectForm.reset();
