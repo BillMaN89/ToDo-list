@@ -17,6 +17,16 @@ class Project {
         }
     }
 
+    updateProjectTitle( {name}) {
+        if ((typeof name === "string") && (name.trim() !== "") && (name !== this.name)){
+            this.name = name.trim();
+            return true;
+        } else {
+            console.warn("No changes have been made!");
+            return false;
+        }
+    }
+
     get tasksList(){
         return this.tasks;
     }

@@ -12,6 +12,9 @@ Functionality
 
 You can add new Projects, and whithin each Project, you can add new Tasks.
 
+Projects: You can edit the title or delete them entirely. (Options accessible via the dropdown menu)
+
+Tasks: You can edit, mark as complete and delete them. (Options accessible via the dropdown menu)
 Every task has 4 properties:
 
     1. Title
@@ -24,6 +27,5 @@ Every task has 4 properties:
         
 If a Task is overdue, then a warning sign appears on the bottom of the task.
 
-Tasks: You can edit, mark as complete and delete them. The options are accessible via the dropdown menu.
-        (right side of task card)
+
 

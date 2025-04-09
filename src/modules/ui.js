@@ -44,27 +44,65 @@ class UI{
             const titleSpan = document.createElement("span");
             titleSpan.textContent = project.name;
 
-            listItem.addEventListener("click", () => {
+            titleSpan.addEventListener("click", () => {
                 this.manager.setCurrentProject(index);
                 this.renderTaskList();
                 this.updateProjectTitle();
             })
 
-            const dltBtn = document.createElement("button");
-            dltBtn.classList.add("icon-btn");
-            dltBtn.innerHTML = '<i class="fas fa-trash" title="Delete Project"></i>';
-            dltBtn.addEventListener("click", () => {
-                this.manager.removeProject(index);
-                this.renderProjectList();
-                this.renderTaskList();
-                this.updateProjectTitle();
+            //menu button
+            const menuBtn = document.createElement("button");
+            menuBtn.classList.add("menu-btn");
+            menuBtn.innerHTML = '<i class="fas fa-ellipsis-v"></i>';
+
+            const dropdown = this.createProjectDropdown(index, project);
+
+            menuBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                document.querySelectorAll(".dropdown-menu.show").forEach(menu => {
+                    if (menu !== dropdown) {
+                        menu.classList.remove("show");
+                    }
+                });
+                dropdown.classList.toggle("show");
             });
 
             wrapper.appendChild(titleSpan);
-            wrapper.appendChild(dltBtn);
+            wrapper.appendChild(menuBtn);
+            wrapper.appendChild(dropdown);
             listItem.appendChild(wrapper);
             this.projectListElement.appendChild(listItem);
         });
+    }
+
+    createProjectDropdown(index, project) {
+        const dropdown = document.createElement("ul");
+        dropdown.classList.add("dropdown-menu");
+
+        //Edit
+        const editOption = document.createElement("li");
+        editOption.innerHTML = `<i class="fas fa-edit" title="Edit Project"></i> Edit`;
+        editOption.addEventListener("click", () => {
+            this.editingProjectIndex = index;
+            this.projectTitleInput.value = project.name;
+            this.projectSubmit.textContent = "Update Project";
+            this.projectModal.classList.remove("hidden");
+        });
+
+        //Delete
+        const dltOption = document.createElement("li");
+        dltOption.innerHTML = '<i class="fas fa-trash" title="Delete Project"></i> Delete';
+        dltOption.addEventListener("click", () => {
+            this.manager.removeProject(index);
+            this.renderProjectList();
+            this.renderTaskList();
+            this.updateProjectTitle();
+        });
+
+        dropdown.appendChild(editOption);
+        dropdown.appendChild(dltOption);
+
+        return dropdown;
     }
 
     renderTaskList() {
@@ -217,10 +255,16 @@ class UI{
 
             const title = this.projectTitleInput.value.trim();
             const setCurrent = this.projectCurrentCheckbox.checked;
-    
-            const newProject = new Project(title);
-            this.manager.addProject(newProject);
-    
+
+            if (this.editingProjectIndex !== null) {
+                const project = this.manager.projects[this.editingProjectIndex];
+                project.updateProjectTitle({ name: title });
+                this.editingProjectIndex = null;
+            } else {
+                const newProject = new Project(title);
+                this.manager.addProject(newProject);
+            };
+                
             if (setCurrent){
                 const index = this.manager.projects.length - 1;
                 this.manager.setCurrentProject(index);
@@ -233,6 +277,7 @@ class UI{
     
             this.projectForm.reset();
             this.projectModal.classList.add("hidden");
+            this.projectSubmit.textContent = "Add Project";
         });
 
         this.projectCancelBtn.addEventListener("click", () => {
