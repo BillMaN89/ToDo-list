@@ -31,6 +31,9 @@ class UI{
         this.taskAddBtn = document.querySelector("#add-task-btn");
         this.taskSubmitBtn = document.querySelector("#submit-task");
 
+        this.editingTaskIndex = null;
+        this.editingProjectIndex = null;
+
     }
 
     renderProjectList(projectManager) {
@@ -330,15 +333,14 @@ class UI{
             const dueDate = this.taskDateInput.value;
             const priority = this.taskPrioritySelect.value;
 
-            if(this.editingTaskIndex !== null) {
+            if (Number.isInteger(this.editingTaskIndex)) {
                 const task = current.tasks[this.editingTaskIndex];
                 task.update({ title, description, dueDate, priority });
-
                 this.editingTaskIndex = null;
             } else {
                 const newTask = new Task(title, description, dueDate, priority);
                 current.addTask(newTask);
-            };
+            }
 
             this.renderTaskList();
             Storage.save(this.manager);
