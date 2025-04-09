@@ -10,6 +10,8 @@ class UI{
         this.projectListElement = document.querySelector("#project-list");
         this.taskListElement = document.querySelector("#task-list");
         this.projectTitleElement = document.querySelector("#project-title");
+        this.taskCounter = document.querySelector("#task-stats");
+        this.overallStats = document.querySelector("#overall-stats");
 
         //project modal
         this.projectModal = document.querySelector("#project-modal");
@@ -51,6 +53,7 @@ class UI{
                 this.manager.setCurrentProject(index);
                 this.renderTaskList();
                 this.updateProjectTitle();
+                this.updateTaskStats();
             })
 
             //menu button
@@ -211,6 +214,7 @@ class UI{
         completeOption.addEventListener("click", () => {
             task.toggleComplete();
             this.renderTaskList();
+            this.updateTaskStats();
             Storage.save(this.manager);
         });
 
@@ -359,6 +363,28 @@ class UI{
 
         });
     }
+
+    updateTaskStats() {
+        const current = this.manager.getCurrentProject();
+    
+        if (!this.taskCounter) return;
+    
+        if (!current) {
+            console.warn("No project selected!");
+            this.taskCounter.innerHTML = `<i class="fas fa-exclamation-triangle"></i> No project selected <i class="fas fa-exclamation-triangle"></i>`;
+            return false;
+        }
+    
+        const total = current.tasks.length;
+        if (total === 0) {
+            this.taskCounter.textContent = `No tasks in this project yet :(`;
+            return;
+        }
+        
+        const completed = current.getCompletedTasks().length;
+        this.taskCounter.innerHTML = `<i class="fa-sharp fa-solid fa-check"></i> ${completed} / ${total} Tasks Completed!`;
+    }
+    
 }
 
 export default UI;
