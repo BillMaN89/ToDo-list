@@ -347,6 +347,7 @@ class UI{
             }
 
             this.renderTaskList();
+            this.updateTaskStats();
             Storage.save(this.manager);
 
             this.taskForm.reset();
