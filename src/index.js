@@ -28,6 +28,11 @@ document.addEventListener("DOMContentLoaded", () => {
     Storage.save(manager);
   }
 
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark");
+    document.documentElement.classList.add("dark");
+  }
   const ui = new UI(manager);
   ui.renderProjectList();
   ui.updateProjectTitle();
@@ -36,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ui.updateOverallStats();
   ui.renderFilterControls();
   ui.setupEventListeners();
+  ui.renderThemeToggle();
 
   window.addEventListener("beforeunload", () => {
     Storage.save(manager);

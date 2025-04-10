@@ -472,6 +472,30 @@ class UI{
             this.filterControls.appendChild(btn);
         });
     }
+
+    renderThemeToggle() {
+        this.themeToggle.textContent = "";
+    
+        const btn = document.createElement("button");
+        const currentTheme = document.body.classList.contains("dark") ? "dark" : "light";
+        btn.innerHTML = currentTheme === "dark"
+            ? `<i class="fa-solid fa-sun"></i> Light`
+            : `<i class="fa-solid fa-moon"></i> Dark`;
+    
+        btn.addEventListener("click", () => {
+            document.body.classList.toggle("dark");
+            document.documentElement.classList.toggle("dark");
+    
+            const newTheme = document.body.classList.contains("dark") ? "dark" : "light";
+            localStorage.setItem("theme", newTheme);
+            btn.innerHTML = newTheme === "dark"
+                ? `<i class="fa-solid fa-sun"></i> Light`
+                : `<i class="fa-solid fa-moon"></i> Dark`;
+        });
+    
+        this.themeToggle.appendChild(btn);
+    }
+    
     
 }
 

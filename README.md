@@ -29,3 +29,5 @@ Functionality
 - Added Task counter for each Project and an Overall Stats Counter, to keep track of completed and overdue tasks across all projects.
 
 - Added Filter buttons.
+
+- Added Dark Theme.
