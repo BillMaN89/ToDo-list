@@ -27,5 +27,6 @@ Every task has 4 properties:
         
 If a Task is overdue, then a warning sign appears on the bottom of the task.
 
+Added Task counter for each Project and an Overall Stats Counter, to keep track of completed and overdue tasks across all projects.
 
 

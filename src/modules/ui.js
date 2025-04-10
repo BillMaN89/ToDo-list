@@ -54,6 +54,7 @@ class UI{
                 this.renderTaskList();
                 this.updateProjectTitle();
                 this.updateTaskStats();
+                this.updateOverallStats();
             })
 
             //menu button
@@ -102,6 +103,7 @@ class UI{
             this.manager.removeProject(index);
             this.renderProjectList();
             this.renderTaskList();
+            this.updateOverallStats();
             this.updateProjectTitle();
         });
 
@@ -215,6 +217,7 @@ class UI{
             task.toggleComplete();
             this.renderTaskList();
             this.updateTaskStats();
+            this.updateOverallStats();
             Storage.save(this.manager);
         });
 
@@ -301,6 +304,7 @@ class UI{
             this.renderProjectList();
             this.updateProjectTitle();
             this.renderTaskList();
+            this.updateOverallStats();
             Storage.save(this.manager);
         
             this.projectForm.reset();
@@ -348,6 +352,7 @@ class UI{
 
             this.renderTaskList();
             this.updateTaskStats();
+            this.updateOverallStats();
             Storage.save(this.manager);
 
             this.taskForm.reset();
@@ -384,6 +389,31 @@ class UI{
         
         const completed = current.getCompletedTasks().length;
         this.taskCounter.innerHTML = `<i class="fa-sharp fa-solid fa-check"></i> ${completed} / ${total} Tasks Completed!`;
+    }
+
+    updateOverallStats() {
+        if (!this.overallStats) return;
+
+        const allProjects = this.manager.projects;
+        let total = 0;
+        let completed = 0;
+        let overdue = 0;
+
+        allProjects.forEach(project => {
+            total += project.tasks.length;
+            completed += project.getCompletedTasks().length;
+
+            project.tasks.forEach((task) => {
+                if ((!task.completed) && isBefore(new Date(task.dueDate), startOfToday())) {
+                    overdue++;
+                }
+            });
+
+            this.overallStats.innerHTML = `
+            <span><i class="fa-solid fa-list"></i> ${total} Total Tasks </span> 
+            <span><i class="fa-sharp fa-solid fa-check"></i> ${completed} Completed </span> 
+            <span><i class="fas fa-exclamation-triangle"></i> ${overdue} Overdue </span>`;
+        })
     }
     
 }

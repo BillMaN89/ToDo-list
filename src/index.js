@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ui.updateProjectTitle();
   ui.renderTaskList();
   ui.updateTaskStats();
+  ui.updateOverallStats();
   ui.setupEventListeners();
 
   window.addEventListener("beforeunload", () => {
