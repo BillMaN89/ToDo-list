@@ -10,8 +10,13 @@ class UI{
         this.projectListElement = document.querySelector("#project-list");
         this.taskListElement = document.querySelector("#task-list");
         this.projectTitleElement = document.querySelector("#project-title");
+
         this.taskCounter = document.querySelector("#task-stats");
         this.overallStats = document.querySelector("#overall-stats");
+
+        this.filterControls = document.querySelector("#filter-controls");
+        this.themeToggle = document.querySelector("#theme-toggle");
+        this.currentFilter = "all";
 
         //project modal
         this.projectModal = document.querySelector("#project-modal");
@@ -51,6 +56,10 @@ class UI{
 
             titleSpan.addEventListener("click", () => {
                 this.manager.setCurrentProject(index);
+
+                this.currentFilter = "all";
+                this.renderFilterControls();
+                
                 this.renderTaskList();
                 this.updateProjectTitle();
                 this.updateTaskStats();
@@ -121,7 +130,29 @@ class UI{
             return false;
         };
 
-        current.tasks.forEach((task, index) => {
+        let tasks = current.tasks;
+        let filteredTasks = tasks;
+
+        switch (this.currentFilter) {
+            case "completed":
+                filteredTasks = tasks.filter(task => task.completed);
+                break;
+            case "open":
+                filteredTasks = tasks.filter(task => !task.completed);
+                break;
+            case "overdue":
+                filteredTasks = tasks.filter(task => {
+                    const due = new Date(task.dueDate);
+                    return !task.completed && !isNaN(due) && isBefore(due, startOfToday());
+                });
+                break;                  
+            case "all":
+                default:
+                filteredTasks = tasks;
+                break;
+        }
+
+        filteredTasks.forEach((task, index) => {
             const listItem = document.createElement("li");
             listItem.classList.add("task-item");
             const title = document.createElement("span");
@@ -228,6 +259,8 @@ class UI{
             const current = this.manager.getCurrentProject();
             current.removeTask(index);
             this.renderTaskList();
+            this.updateTaskStats();
+            this.updateOverallStats();
             Storage.save(this.manager);
         });
 
@@ -414,6 +447,30 @@ class UI{
             <span><i class="fa-sharp fa-solid fa-check"></i> ${completed} Completed </span> 
             <span><i class="fas fa-exclamation-triangle"></i> ${overdue} Overdue </span>`;
         })
+    }
+
+    renderFilterControls() {
+        this.filterControls.textContent = "";
+        const filters = ["all", "completed", "open", "overdue"];
+
+        filters.forEach((filter) => {
+            const btn = document.createElement("button");
+            btn.textContent = filter.charAt(0).toLocaleUpperCase() + filter.slice(1);
+            btn.setAttribute("data-filter", filter);
+
+            if (this.currentFilter === filter) {
+                btn.classList.add("active-filter");
+            };
+
+            btn.addEventListener("click", () => {
+                this.currentFilter = filter;
+                this.renderTaskList();
+                this.updateTaskStats();
+                this.renderFilterControls();
+            });
+
+            this.filterControls.appendChild(btn);
+        });
     }
     
 }

@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ui.renderTaskList();
   ui.updateTaskStats();
   ui.updateOverallStats();
+  ui.renderFilterControls();
   ui.setupEventListeners();
 
   window.addEventListener("beforeunload", () => {
